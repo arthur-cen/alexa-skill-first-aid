@@ -1,4 +1,19 @@
-NumberGuessIntent {number}
-NumberGuessIntent is it {number}
-NumberGuessIntent how about {number}
-NumberGuessIntent could it be {number}
+FirstAidRequest I need help with {KeyWords}
+FirstAidRequest Someone is {KeyWords}
+FirstAidRequest {KeyWords}
+FirstAidRequest Someone is {KeyWords}
+FirstAidRequest Help me to {KeyWords}
+
+AMAZON.StartOverIntent I need First Aid
+AMAZON.StartOverIntent Help me with First Aid
+AMAZON.StartOverIntent First Aid
+AMAZON.StartOverIntent Give me First Aid
+
+DontKnowIntent i don't know
+DontKnowIntent don't know
+DontKnowIntent skip
+DontKnowIntent i don't know that
+DontKnowIntent who knows
+DontKnowIntent i don't know this question
+DontKnowIntent i don't know that one
+DontKnowIntent dunno
