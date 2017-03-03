@@ -1,26 +1,26 @@
 {
   "name": "skill-nodejs-first-aid",
   "version": "1.0.0",
-  "description": "High-low number guessing game for Alexa",
+  "description": "A First Aid App for Alexa",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexa/skill-sample-nodejs-highlowgame.git"
+    "url": "git+https://github.com/arthur-cen/alexa-skill-first-aid"
   },
   "keywords": [
     "Alexa",
-    "game",
-    "skill"
+    "skill",
+    "firstaid"
   ],
   "author": "Amazon.com",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/alexa/skill-sample-nodejs-highlowgame/issues"
+    "url": "https://github.com/arthur-cen/alexa-skill-first-aid"
   },
-  "homepage": "https://github.com/alexa/skill-sample-nodejs-highlowgame#readme",
+  "homepage": "https://github.com/arthur-cen/alexa-skill-first-aid",
   "dependencies": {
     "alexa-sdk": "^1.0.7"
   }

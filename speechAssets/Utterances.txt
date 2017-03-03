@@ -1,16 +1,17 @@
-InstructionRequestIntent I need help with {KeyWords}
-InstructionRequestIntent Someone need {KeyWords}
-InstructionRequestIntent Someone is {KeyWords}
-InstructionRequestIntent {KeyWords}
-InstructionRequestIntent Someone is {KeyWords}
-InstructionRequestIntent Help me to {KeyWords}
-InstructionRequestIntent Give me instruction on {KeyWords}
+InstructionRequestIntent I need help with {KeyWord}
+InstructionRequestIntent I need instructions on {KeyWord}
+InstructionRequestIntent Someone need {KeyWord}
+InstructionRequestIntent Someone is {KeyWord}
+InstructionRequestIntent Someone is {KeyWord}
+InstructionRequestIntent Help me to {KeyWord}
+InstructionRequestIntent Give me instructions on {KeyWord}
 
 
-AMAZON.StartOverIntent I need First Aid
-AMAZON.StartOverIntent Help me with First Aid
-AMAZON.StartOverIntent First Aid
-AMAZON.StartOverIntent Give me First Aid
+AMAZON.StartOverIntent restart {CPRStep}
+AMAZON.StartOverIntent i need first aid
+AMAZON.StartOverIntent help me with first aid
+AMAZON.StartOverIntent first aid
+AMAZON.StartOverIntent give me first aid
 
 AMAZON.HelpIntent i don't know
 AMAZON.HelpIntent what can I say

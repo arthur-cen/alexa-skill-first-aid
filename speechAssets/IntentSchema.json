@@ -1,7 +1,7 @@
 {"intents": [
-    {"intent": "AnswerIntent", "slots": [{"name": "Answer", "type": "AMAZON.NUMBER"}]},
-    {"intent": "DontKnowIntent"},
-    {"intent": "AMAZON.StartOverIntent"},
+    {"intent": "InstructionRequestIntent", "slots": [{"name": "KeyWord", "type": "LIST_OF_KEYWORDS"}]},
+    {"intent": "AMAZON.NextIntent"},
+    {"intent": "AMAZON.StartOverIntent", "slots": [{"name": "Step", "type": "LIST_OF_CPR_STEPS"}]},
     {"intent": "AMAZON.RepeatIntent"},
     {"intent": "AMAZON.HelpIntent"},
     {"intent": "AMAZON.YesIntent"},
