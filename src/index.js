@@ -265,8 +265,17 @@ var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
 	},
 
 	"AMAZON.StartOverIntent": function() {
-		handleSpecialCPRRequest.call(this);
+		if (this.attributes["speechOutput"] && this.attributes["repromptText"]) {
+			this.emitWithState("CPR_Steps", 0, 0);
+		} else {
+			this.handler.state = FIRST_AID_STATES.START;
+			this.emitWithState("StartFirstAid");
+		}
 	},
+
+	"CPRRestartIntent": function() {
+		handleSpecialCPRRequest.call(this);
+	}
 
 	"CPRInstructionRequestIntent": function() {
 		handleSpecialCPRRequest.call(this);
@@ -333,7 +342,6 @@ var ChokingStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CHOKING_STA
 		var speechOutput = "Call 911";
 		this.emit(":tell", speechOutput);
 	}
-
 });
 
 var AEDStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.AED_STATE, {

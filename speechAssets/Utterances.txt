@@ -20,7 +20,8 @@ AMAZON.StartOverIntent i need first aid
 AMAZON.StartOverIntent help me with first aid
 AMAZON.StartOverIntent first aid
 AMAZON.StartOverIntent give me first aid
-AMAZON.StartOverIntent restart {CPRStep}
+
+CPRRestartIntent restart {CPRStep}
 
 AMAZON.HelpIntent i don't know
 AMAZON.HelpIntent what can I say
