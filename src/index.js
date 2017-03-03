@@ -58,25 +58,45 @@ var KeyWordsState = {
 };
 
 //Custom cards to allow detailed interactions
-var CPR_CARDS = {
-	"1":"Step 1: Give 30 Chest Compressions. " +
+var CPR_DIALOG = {
+	"BEGIN":"Put the person on a flat and firm surface.",
+
+	"CHEST_COMPRESSIONS":"Step 1: Give 30 Chest Compressions. " +
 		"Push hard, push fast in the middle of the chest" + 
 		" at least 2 inches deep and at least " +
 		"100 compressions per minute",
-	"2":"Step 2: Give 2 Rescue Breaths. " + 
+	"RESECUE_BREATHS":"Step 2: Give 2 Rescue Breaths. " + 
 		"Tilt the head back and lift the chin up. " + 
 		"Pinch the nose shut then make a complete seal over the person’s mouth. " + 
 		"Blow in for about 1 second to make the chest clearly rise. " + 
 		"Give rescue breaths, one after the other. ",
-	"3":"Step 3: DO NOT STOP. Continue cycles of CPR. " +
+	"DO_NOT_STOP":"Step 3: DO NOT STOP. Continue cycles of CPR. " +
 		"Do not stop CPR except in one of these situations:" + 
 		"You find an obvious sign of life, such as breathing. " + 
 		"An AED is ready to use. " +
 		"Another trained responder or EMS personnel take over. " + 
 		"You are too exhausted to continue. " +
 		"The scene becomes unsafe.",
-	"next": "If you've done, say next to proceed."
+	"NEXT": "If you've done, say next to proceed.",
+	"HELP_MESSAGE": "you can say: how do i do, " +
+		"with following commands: chest compressions," +
+		" rescue breaths or breaths",
+	"SAYREADY": "Say ready to begin CPR procedure",
+	"BEGIN_CHEST_COMPRESSIONS": "Begin Chest Compressions. ",
+	"BEGIN_RESECUE_BREATHS_FIRST": "Begin first Resecue Breaths",
+	"BEGIN_RESECUE_BREATHS_SECOND": "Begin second Resecue Breaths",
+	"SAYDONE": "Say Done when you are done.",
+	"STOP_MESSAGE": "Are you sure you want to stop?",
+	"Unhandled": "Sorry, I didn't get that. To start CPR procedure, say: give me instructions on CRP.",
+	"CANCEL_MESSAGE": "Goodbye!",
+	"NO_MESSAGE": "Continue on CPR."
 };
+
+var CPR_Requests = [
+	"chest compressions", 
+	"rescue breaths", 
+	"breaths"
+];
 
 var responseMap = {
     "WELCOME_MESSAGE" : "First Aid here. What can I help you with?",// Be sure to change this for your skill.
@@ -89,9 +109,7 @@ var responseMap = {
 	"HELP_UNHANDLED": "Say repeat to listen to help again, say stop to quit First Aid",
 	"CANCEL_MESSAGE": "Goodbye!",
 	"STOP_MESSAGE": "Would you like to continue on First Aid? Say yes to continue, say no to quit.",
-	"NO_MESSAGE": "Ok, Let me known whenever you need First Aid. Goodbye!",
-	"CPRUnhandled": "Sorry, I didn't get that. To start CPR procedure, say: give me instructions on CRP.",
-	"CPR_STOP_MESSAGE": "Are you sure to stop?"
+	"NO_MESSAGE": "Ok, Let me known whenever you need First Aid. Goodbye!"
 };
 
 /*
@@ -194,7 +212,7 @@ var helpStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.HELP, {
     },
 
     "AMAZON.CancelIntent": function () {
-    	var speechOutput = responseMap["CANCEL_MESSAGE"]
+    	var speechOutput = responseMap["CANCEL_MESSAGE"];
     	this.emit(":tell", speechOutput);
     },
 
@@ -210,71 +228,88 @@ var helpStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.HELP, {
 });
 
 /*
-TODO:
-	Implement Counting for during chest compression
-
-	YY in {"chest compressions", "rescue breaths", just "breaths"}
-	Implement "How do I do YY"
-	Implement "restart YY", "restart"(default = "chest compression")
-	Implement "Quit CPR"
-	Implement "what can I say?"
-*/
-/*
 ################ Handelers ################
 */
 
 var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
 	"CPRHandling": function(number) {
-		//TODO Elaborate on this section later
-		var speechOutput = CPR_CARDS[number.toString()] + CPR_CARDS["next"];
+		var speechOutput = CPR_DIALOG["BEGIN"] + CPR_DIALOG["SAYREADY"];
 		Object.assign(this.attributes, {
 			"speechOutput": speechOutput,
 			"repromptText": speechOutput,
-			"step": number
+			"step": number,
+			"cycle": 0
 		});
 		this.emit(":ask", speechOutput, speechOutput);
 	},
 
-	// "AMAZON.StartOverIntent": function() {
+	"CPR_Steps": function(number, cycle) {
+		var speechOutput = "";
+		if (number == 0) {
+			speechOutput += CPR_DIALOG['BEGIN_CHEST_COMPRESSIONS'];
+			if (cycle == 0) {
+				speechOutput += CPR_DIALOG['CHEST_COMPRESSIONS'];
+			}
+		} else {
+			if (number == 1) {
+				speechOutput += CPR_DIALOG['BEGIN_RESECUE_BREATHS_FIRST'];
+				if (cycle == 0) {
+					speechOutput += CPR_DIALOG['RESECUE_BREATHS'];
+				}
+			} else {
+				speechOutput += CPR_DIALOG['BEGIN_RESECUE_BREATHS_SECOND'];
+			}
+		}
+		speechOutput += CPR_DIALOG["SAYDONE"];
+		this.emit(":ask", speechOutput, speechOutput);
+	},
 
-	// },
+	"AMAZON.StartOverIntent": function() {
+		handleSpecialCPRRequest.call(this);
+	},
 
-	"AMAZON.NextIntent": function() {
-		this.emitWithState("CPRHandling", this.attributes["step"] + 1);
+	"CPRInstructionRequestIntent": function() {
+		handleSpecialCPRRequest.call(this);
+	},
+
+	"UserDoneIntent": function() {
+		var number = this.attributes['number'];
+		var cycle = this.attributes['cycle'];
+		Object.assign(this.attributes, {
+			"step": (number + 1) % 3,
+			"cycle": cycle + 1
+		});
+		this.emitWithState("CPR_Steps", this.attributes['number'], this.attributes['cycle']);
+	},
+
+	"UserReadyIntent": function() {
+		this.emitWithState("CPR_Steps", this.attributes['number'], this.attributes['cycle']);
 	},
 
 	"AMAZON.HelpIntent": function () {
-		this.handler.state = FIRST_AID_STATES.HELP;
-        this.emitWithState("helpTheUser");
+		this.emit(":tell", CPR_DIALOG['HELP_MESSAGE']);
 	},
 
 	"AMAZON.YesIntent": function() {
-		//NOTE: SAYING YES HERE RESTART CPR PROCEDURE
-		if (this.attributes["speechOutput"] && this.attributes["repromptText"]) {
-            this.handler.state = FIRST_AID_STATES.CPR_STATE;
-            this.emitWithState("AMAZON.RepeatIntent");
-        } else {
-			this.handler.state = FIRST_AID_STATES.CPR_STATE;
-			this.emitWithState("CPRHandling");
-        }
+		this.handler.state = FIRST_AID_STATES.START;
+		this.emitWithState("StartFirstAid");
 	},
 
 	"AMAZON.NoIntent": function() {
-		var speechOutput = responseMap["NO_MESSAGE"];
-        this.emit(":tell", speechOutput);
+        this.emitWithState("CPR_Steps", this.attributes["number"], this.attributes["cycle"]);
 	},
 
 	"AMAZON.StopIntent": function () {
-		var speechOutput = responseMap["CPR_STOP_MESSAGE"];
+		var speechOutput = CPR_DIALOG["STOP_MESSAGE"];
         this.emit(":ask", speechOutput, speechOutput);
     },
 
     "AMAZON.CancelIntent": function () {
-    	this.emit(":tell", responseMap["CANCEL_MESSAGE"]);
+    	this.emit(":tell", CPR_DIALOG["CANCEL_MESSAGE"]);
     },
 
     "Unhandled": function () {
-    	var speechOutput = responseMap["CPRUnhandled"];
+    	var speechOutput = CPR_DIALOG["Unhandled"];
         this.emit(":ask", speechOutput, speechOutput);
     },
 
@@ -284,69 +319,69 @@ var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
 
 
 });
-// All other handlers are unnecessary
+// All other handlers are used for future development on other intents
 var CheckingStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CHECKING_STATE, {
 	"InjureHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 
 });
 
 var ChokingStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CHOKING_STATE, {
 	"ChokingHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 
 });
 
 var AEDStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.AED_STATE, {
 	"AEDHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var CtrlBleedStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES, {
 	"CtrlBleedHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var BurnSateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.BURN_STATE, {
 	"BurnsHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var PoisonStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.POISON_STATE, {
 	"PoisoningHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var NeckInjStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.NECK_INJ_STATE, {
 	"NeckInjHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var SpinalInjStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.SPINAL_INJ_STATE, {
 	"SpinalInjHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
 var StrokeStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.STROKE_STATE, {
 	"StrokeHandling": function(number) {
-	var speechOutput = "Call 911";
-	this.emit(":tell", speechOutput);
+		var speechOutput = "Call 911";
+		this.emit(":tell", speechOutput);
 	}
 });
 
@@ -370,31 +405,27 @@ function handleUserRequest() {
 		requestedSate = FIRST_AID_STATES.HELP;
 		requestedHandler = "helpTheUser";
 	}
-	//change the state here skipped calling handling function
 	this.handler.state = requestedSate;
-	this.emitWithState(requestedHandler, 1);
-
-	//change line below
-	// this.emit(":ask", speechOutput, repromptText, this.t("GAME_NAME"), repromptText);
+	this.emitWithState(requestedHandler, 0);
 }
 
-// function handleCPRRestartRequest(){
-// 	if (this.event.request.intent.slots.CPRStep.value == "chest compressions") {
+function handleSpecialCPRRequest(intent) {
+	if (isCPRSpecialRequestValid(intent)) {
+		if (intent.slots.CPRStep.value == "chest compressions") {
+			this.emitWithState("CPR_Steps", 0, 0);
+		} else {
+			this.emitWithState("CPR_Steps", 1, 0);
+		}
+	} else {
+		this.emitWithState("CPR_Steps", 0, 0);
+	}
+}
 
-// 	} else if (this.event.request.intent.slots.CPRStep.value == "rescue breaths") {
+function isCPRSpecialRequestValid (intent) {
+	return intent && intent.slots && intent.slots.CPRStep && intent.slots.CPRStep && (intent.slots.CPRStep.value in CPR_Requests);
+}
 
-// 	} else if (this.event.request.intent.slots.CPRStep.value == "breaths") {
-
-// 	} else {
-
-// 	}
-// }
-
-// function handleSpecialCPRRequest() {
-
-// }
-
-function isKeyWordValid(intent) { // Try to fix problem here
+function isKeyWordValid(intent) {
 	return intent && intent.slots && intent.slots.KeyWord && intent.slots.KeyWord.value && (intent.slots.KeyWord.value in KeyWordsHandler);
 }
 

@@ -1,22 +1,32 @@
 InstructionRequestIntent I need help with {KeyWord}
-InstructionRequestIntent I need instructions on {KeyWord}
 InstructionRequestIntent Someone need {KeyWord}
 InstructionRequestIntent Someone is {KeyWord}
 InstructionRequestIntent Someone is {KeyWord}
 InstructionRequestIntent Help me to {KeyWord}
-InstructionRequestIntent Give me instructions on {KeyWord}
+InstrucitonRequestIntent How do I do {KeyWord}
+InstructionRequestIntent Give me instruction on {KeyWord}
 
+CPRInstructionRequestIntent how do i do {CPRStep}
 
-AMAZON.StartOverIntent restart {CPRStep}
+UserReadyIntent ready
+UserReadyIntent i'm ready
+UserReadyIntent i am ready
+
+UserDoneIntent i'm done
+UserDoneIntent i am done
+UserDoneIntent done
+
 AMAZON.StartOverIntent i need first aid
 AMAZON.StartOverIntent help me with first aid
 AMAZON.StartOverIntent first aid
 AMAZON.StartOverIntent give me first aid
+AMAZON.StartOverIntent restart {CPRStep}
 
 AMAZON.HelpIntent i don't know
 AMAZON.HelpIntent what can I say
 AMAZON.HelpIntent i don't know what to do
 AMAZON.HelpIntent what should i do
+AMAZON.HelpIntent what should i say
 AMAZON.HelpIntent don't know
 AMAZON.HelpIntent what can i do
 AMAZON.HelpIntent i need assiatance

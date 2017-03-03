@@ -1,7 +1,8 @@
 {"intents": [
     {"intent": "InstructionRequestIntent", "slots": [{"name": "KeyWord", "type": "LIST_OF_KEYWORDS"}]},
+    {"intent": "CPRInstructionRequestIntent", "slots": [{"name": "CPRStep", "type": "LIST_OF_CPR_STEPS"}]}
     {"intent": "AMAZON.NextIntent"},
-    {"intent": "AMAZON.StartOverIntent", "slots": [{"name": "Step", "type": "LIST_OF_CPR_STEPS"}]},
+    {"intent": "AMAZON.StartOverIntent", "slots": [{"name": "CPRStep", "type": "LIST_OF_CPR_STEPS"}]},
     {"intent": "AMAZON.RepeatIntent"},
     {"intent": "AMAZON.HelpIntent"},
     {"intent": "AMAZON.YesIntent"},
