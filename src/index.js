@@ -19,7 +19,7 @@ var CPR_CARDS = {
 				 Another trained responder or EMS personnel take over.
 				 You are too exhausted to continue.
 				 The scene becomes unsafe."
-}
+};
 
 // TODO add more instruction cards here
 
@@ -50,7 +50,7 @@ var KeyWordsHandler = {
 	"Neck Injuries": "NeckInjHandling",
 	"Spinal Injuries": "SpinalInjHandling",
 	"Stroke": "StrokeHandling"
-}
+};
 
 var KeyWordsState = {
 	"Checking an Injured Adult": FIRST_AID_STATES.CHECKING_STATE,
@@ -64,7 +64,7 @@ var KeyWordsState = {
 	"Neck Injuries": FIRST_AID_STATES.NECK_INJ_STATE,
 	"Spinal Injuries": FIRST_AID_STATES.SPINAL_INJ_STATE,
 	"Stroke": FIRST_AID_STATES.STROKE_STATE
-}
+};
 
 var languageString = {
 	    "en-US": {
@@ -91,7 +91,7 @@ var languageString = {
         	"STOP_MESSAGE": "Would you like to continue on First Aid? Say yes to continue, say no to quit.",
         	"NO_MESSAGE": "Ok, Let me known whenever you need First Aid. Goodbye!"
         }
-}
+};
 
 /*
 ################ Language Strings ################
@@ -161,7 +161,7 @@ var startFirstAidHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.START, {
 	// "Unhandled": function() {
 	// 	//Fill Later
 	// }
-})
+});
 
 var helpStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.HELP, {
 // Fill out the intents-function that this Handler need to handle
@@ -212,7 +212,7 @@ var helpStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.HELP, {
     	console.log("Session ended in help state: " + this.event.request.reason);
     }
 
-})
+});
 
 /*
 TODO:
