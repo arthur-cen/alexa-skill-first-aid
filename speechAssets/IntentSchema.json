@@ -1,8 +1,11 @@
 {"intents": [
-    {"intent": "NumberGuessIntent", "slots": [{"name": "number", "type": "AMAZON.NUMBER"}]},
+    {"intent": "AnswerIntent", "slots": [{"name": "Answer", "type": "AMAZON.NUMBER"}]},
+    {"intent": "DontKnowIntent"},
+    {"intent": "AMAZON.StartOverIntent"},
+    {"intent": "AMAZON.RepeatIntent"},
+    {"intent": "AMAZON.HelpIntent"},
     {"intent": "AMAZON.YesIntent"},
     {"intent": "AMAZON.NoIntent"},
-    {"intent": "AMAZON.HelpIntent"},
     {"intent": "AMAZON.StopIntent"},
     {"intent": "AMAZON.CancelIntent"}
   ]
