@@ -1,6 +1,7 @@
 {"intents": [
     {"intent": "InstructionRequestIntent", "slots": [{"name": "KeyWord", "type": "LIST_OF_KEYWORDS"}]},
-    {"intent": "CPRInstructionRequestIntent", "slots": [{"name": "CPRStep", "type": "LIST_OF_CPR_STEPS"}]}
+    {"intent": "CPRInstructionRequestIntent", "slots": [{"name": "CPRStep", "type": "LIST_OF_CPR_STEPS"}]},
+    {"intent": "CPRRestartIntent", "slots": [{"name": "CPRStep", "type": "LIST_OF_CPR_STEPS"}]},
     {"intent": "UserReadyIntent"},
     {"intent": "UserDoneIntent"},
     {"intent": "AMAZON.StartOverIntent"},
