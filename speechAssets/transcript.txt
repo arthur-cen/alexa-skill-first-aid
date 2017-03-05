@@ -1,0 +1,232 @@
+--Request = "start first aid"
+{
+  "session": {
+    "sessionId": "SessionId.1c4c8fd1-9ebe-43d2-b2ff-d58ed768a429",
+    "application": {
+      "applicationId": "amzn1.ask.skill.44fdf1d5-89cb-4459-9163-e1f5c60e24e7"
+    },
+    "attributes": {
+      "STATE": "_START_MODE"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AGR7364PIL5IHPACFVK63VHISBTEIOE7VV7EE6LO3542ZPVMUSXXQK3VOR3MERLDZNXDGKJDMM3T5DJDMHL73AQ6NUWGI43DSZMMEOXM22APA7FG5BD7QPAU3XXDFHDL7DUPEFLEDFFFCIMCXM3J5OZFFQNGIVZUVURLLQBQNGZNHTHT7DAMF453QHTMQJEFSCEM53GMWLXUJ7I"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "LaunchRequest",
+    "requestId": "EdwRequestId.7ae4cc67-9606-4e73-a428-9c214ed773fe",
+    "locale": "en-US",
+    "timestamp": "2017-03-04T04:18:49Z"
+  },
+  "version": "1.0"
+}
+--Response
+{
+  "version": "1.0",
+  "response": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak> You can say First Aid or start to start First Aid.  </speak>"
+    },
+    "reprompt": {
+      "outputSpeech": {
+        "type": "SSML",
+        "ssml": "<speak> You can say First Aid or start to start First Aid.  </speak>"
+      }
+    },
+    "shouldEndSession": false
+  },
+  "sessionAttributes": {
+    "STATE": "_START_MODE"
+  }
+}
+----------
+
+--Request = "some one is injured"
+{
+  "session": {
+    "sessionId": "SessionId.1c4c8fd1-9ebe-43d2-b2ff-d58ed768a429",
+    "application": {
+      "applicationId": "amzn1.ask.skill.44fdf1d5-89cb-4459-9163-e1f5c60e24e7"
+    },
+    "attributes": {
+      "STATE": "_START_MODE"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AGR7364PIL5IHPACFVK63VHISBTEIOE7VV7EE6LO3542ZPVMUSXXQK3VOR3MERLDZNXDGKJDMM3T5DJDMHL73AQ6NUWGI43DSZMMEOXM22APA7FG5BD7QPAU3XXDFHDL7DUPEFLEDFFFCIMCXM3J5OZFFQNGIVZUVURLLQBQNGZNHTHT7DAMF453QHTMQJEFSCEM53GMWLXUJ7I"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.9ac7918f-ad58-4526-87cc-9b655b9c896b",
+    "locale": "en-US",
+    "timestamp": "2017-03-04T04:20:08Z",
+    "intent": {
+      "name": "InstructionRequestIntent",
+      "slots": {
+        "KeyWord": {
+          "name": "KeyWord",
+          "value": "injured"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+--Response
+{
+  "version": "1.0",
+  "response": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak> Call 911 </speak>"
+    },
+    "shouldEndSession": true
+  },
+  "sessionAttributes": {
+    "STATE": "_CHECKING_MODE"
+  }
+}
+----------
+
+--Request = "someone is choking"
+{
+  "session": {
+    "sessionId": "SessionId.6480a157-c263-4ccd-9cfd-19c45e409d70",
+    "application": {
+      "applicationId": "amzn1.ask.skill.44fdf1d5-89cb-4459-9163-e1f5c60e24e7"
+    },
+    "attributes": {
+      "STATE": "_START_MODE"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AGR7364PIL5IHPACFVK63VHISBTEIOE7VV7EE6LO3542ZPVMUSXXQK3VOR3MERLDZNXDGKJDMM3T5DJDMHL73AQ6NUWGI43DSZMMEOXM22APA7FG5BD7QPAU3XXDFHDL7DUPEFLEDFFFCIMCXM3J5OZFFQNGIVZUVURLLQBQNGZNHTHT7DAMF453QHTMQJEFSCEM53GMWLXUJ7I"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.25e3e879-1f96-4fcf-a1d0-1b2e5d7e10d8",
+    "locale": "en-US",
+    "timestamp": "2017-03-04T04:20:54Z",
+    "intent": {
+      "name": "InstructionRequestIntent",
+      "slots": {
+        "KeyWord": {
+          "name": "KeyWord",
+          "value": "choking"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
+--Response
+{
+  "version": "1.0",
+  "response": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak> Is the person conscious? </speak>"
+    },
+    "reprompt": {
+      "outputSpeech": {
+        "type": "SSML",
+        "ssml": "<speak> Is the person conscious? </speak>"
+      }
+    },
+    "shouldEndSession": false
+  },
+  "sessionAttributes": {
+    "STATE": "_CHOKING_MODE"
+  }
+}
+----------
+
+--Request = "yes"
+{
+  "session": {
+    "sessionId": "SessionId.95f39ee8-eaa0-4670-b503-316beca5133c",
+    "application": {
+      "applicationId": "amzn1.ask.skill.44fdf1d5-89cb-4459-9163-e1f5c60e24e7"
+    },
+    "attributes": {
+      "STATE": "_CHOKING_MODE"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AGR7364PIL5IHPACFVK63VHISBTEIOE7VV7EE6LO3542ZPVMUSXXQK3VOR3MERLDZNXDGKJDMM3T5DJDMHL73AQ6NUWGI43DSZMMEOXM22APA7FG5BD7QPAU3XXDFHDL7DUPEFLEDFFFCIMCXM3J5OZFFQNGIVZUVURLLQBQNGZNHTHT7DAMF453QHTMQJEFSCEM53GMWLXUJ7I"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.1d6c5f4d-598f-4e02-8ed0-246ce1e41611",
+    "locale": "en-US",
+    "timestamp": "2017-03-04T04:25:44Z",
+    "intent": {
+      "name": "AMAZON.YesIntent",
+      "slots": {}
+    }
+  },
+  "version": "1.0"
+}
+--Response
+{
+  "version": "1.0",
+  "response": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak> Call 911.  </speak>"
+    },
+    "shouldEndSession": true
+  },
+  "sessionAttributes": {
+    "STATE": "_CHOKING_MODE"
+  }
+}
+----------
+
+--Request = "no"
+{
+  "session": {
+    "sessionId": "SessionId.dd662ed8-6fb9-43b7-bcfe-473205a0622d",
+    "application": {
+      "applicationId": "amzn1.ask.skill.44fdf1d5-89cb-4459-9163-e1f5c60e24e7"
+    },
+    "attributes": {
+      "STATE": "_CHOKING_MODE"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AGR7364PIL5IHPACFVK63VHISBTEIOE7VV7EE6LO3542ZPVMUSXXQK3VOR3MERLDZNXDGKJDMM3T5DJDMHL73AQ6NUWGI43DSZMMEOXM22APA7FG5BD7QPAU3XXDFHDL7DUPEFLEDFFFCIMCXM3J5OZFFQNGIVZUVURLLQBQNGZNHTHT7DAMF453QHTMQJEFSCEM53GMWLXUJ7I"
+    },
+    "new": false
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.35a97472-4885-4e58-afaf-0ac448c21d13",
+    "locale": "en-US",
+    "timestamp": "2017-03-04T04:27:19Z",
+    "intent": {
+      "name": "AMAZON.NoIntent",
+      "slots": {}
+    }
+  },
+  "version": "1.0"
+}
+--Response
+{
+  "version": "1.0",
+  "response": {
+    "outputSpeech": {
+      "type": "SSML",
+      "ssml": "<speak> Call 911.  </speak>"
+    },
+    "shouldEndSession": true
+  },
+  "sessionAttributes": {
+    "STATE": "_CHOKING_MODE"
+  }
+}
+----

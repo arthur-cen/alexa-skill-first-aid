@@ -1,9 +1,11 @@
 InstructionRequestIntent I need help with {KeyWord}
 InstructionRequestIntent Someone need {KeyWord}
+InstructionRequestIntent checking an {KeyWord} adult
+InstructionRequestIntent checking a {KeyWord} adult
 InstructionRequestIntent Someone is {KeyWord}
 InstructionRequestIntent Someone is {KeyWord}
 InstructionRequestIntent Help me to {KeyWord}
-InstrucitonRequestIntent How do I do {KeyWord}
+InstructionRequestIntent How do I do {KeyWord}
 InstructionRequestIntent Give me instruction on {KeyWord}
 
 CPRInstructionRequestIntent how do i do {CPRStep}

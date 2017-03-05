@@ -94,16 +94,11 @@ var CPR_DIALOG = {
 	"SAYRESTART": "Say restart to repeat the procedure from chest compressions. "
 };
 
-var CPR_Requests = [
-	"chest compressions", 
-	"rescue breaths", 
-	"breaths"
-];
 
 var responseMap = {
     "WELCOME_MESSAGE" : "First Aid here. What can I help you with?",// Be sure to change this for your skill.
 	"WELCOME_MESSAGE_REPROMPT": "What can I help you with? You can say I need ",
-	"START_UNHANDLED": "You can say First Aid or start to start First Aid",
+	"START_UNHANDLED": "You can say First Aid or start to start First Aid. ",
 	"FIRST_AID_OPTIONS" : "Checking an Injured Adult, Choking, CPR, AED, " +
 	"Controlling Bleeding, Burns, Poisoning, Neck Injuries, Spinal Injuries, Stroke",
 	"HELP_MESSAGE": "You can say I need help with, with following keywords: ",
@@ -150,7 +145,6 @@ var startFirstAidHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.START, {
 	},
 
 	"AMAZON.StartOverIntent": function() {
-        this.handler.state = FIRST_AID_STATES.START;
         this.emitWithState("StartFirstAid");
     },
 
@@ -329,8 +323,7 @@ var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
 	},
 
 	"AMAZON.YesIntent": function() {
-		this.handler.state = FIRST_AID_STATES.START;
-		this.emitWithState("StartFirstAid");
+		this.emit(":tell", CPR_DIALOG["CANCEL_MESSAGE"]);
 	},
 
 	"AMAZON.NoIntent": function() {
@@ -343,7 +336,7 @@ var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
     },
 
     "AMAZON.CancelIntent": function () {
-    	this.emit(":tell", CPR_DIALOG["CANCEL_MESSAGE"]);
+    	this.emitWithState("SessionEndedRequest");
     },
 
     "Unhandled": function () {
@@ -352,7 +345,7 @@ var CPRStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CPR_STATE, {
     },
 
     "SessionEndedRequest": function () {
-    	console.log("Session ended in help state: " + this.event.request.reason);
+    	console.log("Session ended in CPR state: " + this.event.request.reason);
     }
 
 
@@ -363,13 +356,20 @@ var CheckingStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CHECKING_S
 		var speechOutput = "Call 911";
 		this.emit(":tell", speechOutput);
 	}
-
 });
 
 var ChokingStateHandlers = Alexa.CreateStateHandler(FIRST_AID_STATES.CHOKING_STATE, {
 	"ChokingHandling": function(step) {
-		var speechOutput = "Call 911";
-		this.emit(":tell", speechOutput);
+		var speechOutput = "Is the person conscious?";
+		this.emit(":ask", speechOutput, speechOutput);
+	},
+
+	"AMAZON.YesIntent": function() {
+		this.emit(":tell", "Call 911. ");
+	},
+
+	"AMAZON.NoIntent": function() {
+		this.emit(":tell", "Call 911. ")
 	}
 });
 
@@ -448,10 +448,10 @@ function handleUserRequest() {
 
 function handleSpecialCPRRequest() {
 	if (isCPRSpecialRequestValid(this.event.request.intent)) {
-		if (this.event.request.intent.slots.CPRStep.value == "chest compressions") {
-			this.emitWithState("CPR_Steps", 0, 0);
-		} else {
+		if (this.event.request.intent.slots.CPRStep.value == 'breaths' || this.event.request.intent.slots.CPRStep.value == 'rescue breaths') {
 			this.emitWithState("CPR_Steps", 1, 0);
+		} else {
+			this.emitWithState("CPR_Steps", 0, 0);
 		}
 	} else {
 		this.emitWithState("CPR_Steps", 0, 0);
@@ -459,7 +459,7 @@ function handleSpecialCPRRequest() {
 }
 
 function isCPRSpecialRequestValid (intent) {
-	return intent && intent.slots && intent.slots.CPRStep && intent.slots.CPRStep.value;// && (intent.slots.CPRStep.value in CPR_Requests);
+	return intent && intent.slots && intent.slots.CPRStep && intent.slots.CPRStep.value;
 }
 
 function isKeyWordValid(intent) {
